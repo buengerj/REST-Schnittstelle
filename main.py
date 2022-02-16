@@ -32,17 +32,17 @@ def user_delete(user_id):
 
 
 @app.route('/list/<list_id>/entry', methods=['POST'])
-def entry_add():
+def entry_add(list_id):
     return 'CREATE ENTRY'
 
 
 @app.route('/list/<list_id>/entry/<entry_id>', methods=['POST'])
-def entry_update():
+def entry_update(list_id, entry_id):
     return 'UPDATE ENTRY'
 
 
 @app.route('/list/<list_id>/entry/<entry_id>', methods=['DELETE'])
-def entry_delete():
+def entry_delete(list_id, entry_id):
     return 'DELETE ENTRY'
 
 
