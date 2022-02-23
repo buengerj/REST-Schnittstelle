@@ -21,17 +21,17 @@ todo_lists = [
     {'id': todo_list_id_3, 'name': 'todo_list_3', 'description': 'Description for List 3'},
 ]
 
-user_list = {[
+user_list = [
     {'id': user_id_1, 'name': 'User 1'},
     {'id': user_id_2, 'name': 'User 2'},
     {'id': user_id_3, 'name': 'User 3'},
-]}
+]
 
-entry_list = {[
+entry_list = [
     {'id': entry_id_1, 'name': 'Entry 1', 'description': 'Description for Entry 1', 'list': todo_list_id_1},
     {'id': entry_id_2, 'name': 'Entry 2', 'description': 'Description for Entry 2', 'list': todo_list_id_2},
     {'id': entry_id_3, 'name': 'Entry 3', 'description': 'Description for Entry 3', 'list': todo_list_id_3},
-]}
+]
 
 
 @app.route('/list/<list_id>', methods=['DELETE', 'GET'])
