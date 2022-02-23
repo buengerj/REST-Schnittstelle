@@ -56,7 +56,7 @@ def handle_list(list_id):
 
 
 @app.route('/lists', methods=['GET'])
-def handle_list():
+def handle_lists():
     return jsonify(todo_lists)
 
 
@@ -65,22 +65,34 @@ def create_list():
     new_list = request.get_json(force=True)
     new_list['id'] = uuid.uuid4()
     todo_lists.append(new_list)
-    return 'Neue Liste wurde erstellt.'
+    return 'Neue Liste wurde erstellt.', 200
 
 
 @app.route('/users', methods=['GET'])
-def users_get():
-    return 'SHOW ALL USERS'
+def handle_users():
+    return jsonify(user_list)
 
 
 @app.route('/user', methods=['POST'])
-def user_add():
-    return 'CREATE USER'
+def create_user():
+    new_user = request.get_json(force=True)
+    new_user['id'] = uuid.uuid4()
+    user_list.append(new_user)
+    return 'Neuer User wurde erstellt', 200
 
 
 @app.route('/user/<user_id>', methods=['DELETE'])
 def user_delete(user_id):
-    return 'DELETE USER'
+    user_item = None
+    for k in user_list:
+        if k['id'] == user_id:
+            user_item = k
+
+    if not user_item:
+        abort(404)
+
+    user_list.remove(user_item)
+    return 'User wurde gelöscht.', 200
 
 
 @app.route('/list/<list_id>/entry', methods=['POST'])
