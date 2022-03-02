@@ -28,9 +28,9 @@ user_list = [
 ]
 
 entry_list = [
-    {'id': entry_id_1, 'name': 'Entry 1', 'description': 'Description for Entry 1', 'list': todo_list_id_1},
-    {'id': entry_id_2, 'name': 'Entry 2', 'description': 'Description for Entry 2', 'list': todo_list_id_2},
-    {'id': entry_id_3, 'name': 'Entry 3', 'description': 'Description for Entry 3', 'list': todo_list_id_3},
+    {'id': entry_id_1, 'name': 'Entry 1', 'description': 'Description for Entry 1', 'list_id': todo_list_id_1},
+    {'id': entry_id_2, 'name': 'Entry 2', 'description': 'Description for Entry 2', 'list_id': todo_list_id_2},
+    {'id': entry_id_3, 'name': 'Entry 3', 'description': 'Description for Entry 3', 'list_id': todo_list_id_3},
 ]
 
 
@@ -48,7 +48,7 @@ def handle_list(list_id):
 
     if request.method == 'GET':
         print('Ausgeben der Einträge:')
-        return jsonify([j for j in entry_list if j['list'] == list_id])
+        return jsonify([j for j in entry_list if j['list_id'] == list_id])
     elif request.method == 'DELETE':
         print('Löschen der Liste')
         todo_lists.remove(list_item)
@@ -87,6 +87,7 @@ def user_delete(user_id):
     for k in user_list:
         if k['id'] == user_id:
             user_item = k
+            break
 
     if not user_item:
         abort(404)
@@ -97,17 +98,45 @@ def user_delete(user_id):
 
 @app.route('/list/<list_id>/entry', methods=['POST'])
 def entry_add(list_id):
-    return 'CREATE ENTRY'
+    new_entry = request.get_json(force=True)
+    new_entry['list_id'] = list_id
+    new_entry['id'] = uuid.uuid4()
+    entry_list.append(new_entry)
+    return 'Neuer Eintrag wurde erstellt.', 200
 
 
 @app.route('/list/<list_id>/entry/<entry_id>', methods=['POST'])
 def entry_update(list_id, entry_id):
-    return 'UPDATE ENTRY'
+    updated_entry = None
+    for i in entry_list:
+        if i['list_id'] == list_id:
+            if i['id'] == entry_id:
+                entry_list.remove(i)
+                updated_entry = request.get_json(force=True)
+                updated_entry['list_id'] = list_id
+                updated_entry['id'] = entry_id
+
+    if not updated_entry:
+        abort(404)
+
+    entry_list.append(updated_entry)
+    return 'Eintrag wurde geupdatet.', 200
 
 
 @app.route('/list/<list_id>/entry/<entry_id>', methods=['DELETE'])
 def entry_delete(list_id, entry_id):
-    return 'DELETE ENTRY'
+    entry_item = None
+    for i in entry_list:
+        if i['list_id'] == list_id:
+            if i['id'] == entry_id:
+                entry_item = i
+                break
+
+    if not entry_item:
+        abort(404)
+
+    entry_list.remove(entry_item)
+    return 'Eintrag wurde gelöscht.', 200
 
 
 if __name__ == '__main__':
