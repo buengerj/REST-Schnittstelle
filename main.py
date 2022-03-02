@@ -4,7 +4,6 @@ from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
 
-
 todo_list_id_1 = "bd65600d-8669-4903-8a14-af88203add38"
 todo_list_id_2 = "5361a11b-615c-42bf-9bdb-e2c3790ada14"
 todo_list_id_3 = "16fd2706-8baf-433b-82eb-8c7fada847da"
@@ -113,40 +112,27 @@ def entry_add(list_id):
     return 'Neuer Eintrag wurde erstellt.', 200
 
 
-@app.route('/list/<list_id>/entry/<entry_id>', methods=['POST'])
+@app.route('/list/<list_id>/entry/<entry_id>', methods=['POST', 'DELETE'])
 def entry_update(list_id, entry_id):
-    updated_entry = None
-    for i in entry_list:
-        if i['list_id'] == list_id:
-            if i['id'] == entry_id:
-                entry_list.remove(i)
-                updated_entry = request.get_json(force=True)
-                updated_entry['list_id'] = list_id
-                updated_entry['id'] = entry_id
-
-    if not updated_entry:
-        abort(404)
-
-    entry_list.append(updated_entry)
-    return 'Eintrag wurde geupdatet.', 200
-
-
-@app.route('/list/<list_id>/entry/<entry_id>', methods=['DELETE'])
-def entry_delete(list_id, entry_id):
     entry_item = None
     for i in entry_list:
-        if i['list_id'] == list_id:
-            if i['id'] == entry_id:
-                entry_item = i
-                break
+        if i['list_id'] == list_id and i['id'] == entry_id:
+            entry_list.remove(i)
+            entry_item = request.get_json(force=True)
+            entry_item['list_id'] = list_id
+            entry_item['id'] = entry_id
+            break
 
     if not entry_item:
         abort(404)
 
-    entry_list.remove(entry_item)
-    return 'Eintrag wurde gelöscht.', 200
+    if request.method == 'POST':
+        entry_list.append(entry_item)
+        return 'Eintrag wurde geupdatet.', 200
+    elif request.method == 'DELETE':
+        entry_list.remove(entry_item)
+        return 'Eintrag wurde gelöscht.', 200
 
 
 if __name__ == '__main__':
     app.run()
-
