@@ -34,6 +34,14 @@ entry_list = [
 ]
 
 
+@app.after_request
+def apply_cors_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,DELETE'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
+
+
 @app.route('/list/<list_id>', methods=['DELETE', 'GET'])
 def handle_list(list_id):
     list_item = None
