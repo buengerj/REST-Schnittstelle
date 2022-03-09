@@ -13,5 +13,5 @@ verwendet werden. Statt dessen werden zufällige GUID genutzt.
 <h3>main.py</h3>
 Hier steht der gesamte Programmcode drin. Außerdem wurden hier die die nötigen Listen für Testzwecke deklariert.
 
-<h3>swagger.json</h3>
-Diese Datei enthält die OpenAPIDocumentation im JSON-Format.
+<h3>swagger.yaml</h3>
+Diese Datei enthält die OpenAPIDocumentation im YAML-Format.
