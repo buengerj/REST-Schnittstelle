@@ -117,16 +117,17 @@ def entry_update(list_id, entry_id):
     entry_item = None
     for i in entry_list:
         if i['list_id'] == list_id and i['id'] == entry_id:
-            entry_list.remove(i)
-            entry_item = request.get_json(force=True)
-            entry_item['list_id'] = list_id
-            entry_item['id'] = entry_id
+            entry_item = i
             break
 
     if not entry_item:
         abort(404)
 
     if request.method == 'POST':
+        entry_list.remove(entry_item)
+        entry_item = request.get_json(force=True)
+        entry_item['list_id'] = list_id
+        entry_item['id'] = entry_id
         entry_list.append(entry_item)
         return 'Eintrag wurde geupdatet.', 200
     elif request.method == 'DELETE':
