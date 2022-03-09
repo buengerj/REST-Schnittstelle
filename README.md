@@ -9,3 +9,9 @@ Festlegung der Listenbesitzer müssen neue Benutzer hinzugefügt und gelöscht u
 muss eine Liste aller vorhandenen Benutzer abgefragt werden können.
 Eine Authentifizierung ist zunächst nicht zu planen bzw. implementieren. Aus Sicherheitsgründen sollen jedoch für alle verwendeten IDs keine fortlaufenden Nummern
 verwendet werden. Statt dessen werden zufällige GUID genutzt.
+
+<h3>main.py</h3>
+Hier steht der gesamte Programmcode drin. Außerdem wurden hier die die nötigen Listen für Testzwecke deklariert.
+
+<h3>swagger.json</h3>
+Diese Datei enthält die OpenAPIDocumentation im JSON-Format.
